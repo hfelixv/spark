@@ -1,0 +1,111 @@
+openapi: 3.0.0
+info:
+  title: Identifica Prestamo en Biblioteca
+  description: |-
+    This is a sample on ALMA api calls
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://api-na.hosted.exlibrisgroup.com
+tags:
+  - name: alma
+    description: Alma api end points
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /almaws/v1/items:
+    get:
+      tags:
+        - alma
+      summary: Find loan_id
+      description: Argumentos de la API que conecta a la BD y retorna el valor de loan_id
+      operationId: loan_ID retrieve
+      parameters:
+        - in: query
+          required: false
+          name: view
+          schema:
+            type: string
+          description: param view= label
+        - in: query
+          required: true
+          name: item_barcode
+          schema:
+            type: integer
+          description: param item barcode
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: No items found for barcode | API-key not defined or not configured to allow this API
+  /almaws/v1/bibs/{mms_id}/loan:
+    get:
+      tags:
+        - alma
+      summary: Retrieve Bib Loan information
+      description: Argumentos de la API que conecta a la BD y retorna el valor de loan_id
+      operationId: request2
+      parameters:
+        - in: path
+          name: mms_id   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: mms ID
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: No items found for barcode | API-key not defined or not configured to allow this API
+  /almaws/v1/bibs/almaws/v1/bibs/{mms_id}/holdings/{holding_id}/items/{item_id}/loans:
+    get:
+      tags:
+        - alma
+      summary: Loan By Item Information
+      description: Argumentos de la API que conecta a la BD y retorna el valor de loan_id
+      operationId: request3
+      parameters:
+        - in: path
+          name: mms_id 
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: mms ID
+        - in: path
+          required: true
+          name: holding_id
+          schema:
+            type: integer
+          description: my description
+        - in: path
+          required: true
+          name: item_id
+          schema:
+            type: integer
+          description: my description  
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: No items found | API-key not defined or not configured to allow this API              
+components:
+# 1) Define the key name and location
+  securitySchemes:
+    ApiKeyAuth:        # arbitrary name for the security scheme
+      type: apiKey
+      in: query       # can be "header", "query" or "cookie"
+      name: apikey  # name of the header, query parameter or cookie
+# 2) Apply the API key globally to all operations
+security:
+  - ApiKeyAuth: []     # use the same name as under securitySchemes
