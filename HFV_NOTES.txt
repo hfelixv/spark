@@ -1,0 +1,22 @@
+
+
+
+
+
+
+
+
+
+
+
+
+***********************
+*** commit messages ***
+***********************
+
+
+
+
+git commit -m "commit after pull with no options and this merge is necessary message"
+
+git commit -m "first call to alma db endpoint w/ feign library"
