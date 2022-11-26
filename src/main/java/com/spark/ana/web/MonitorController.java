@@ -5,6 +5,9 @@ package com.spark.ana.web;
 import com.spark.ana.request.TagRequest;
 //import org.springdoc.api.annotations.ParameterObject;
 import com.spark.ana.rest.client.response.Item;
+//import com.spark.ana.service.GPOConnService;
+import com.spark.ana.service.GPOConnService;
+import lombok.extern.slf4j.Slf4j;
 import org.springdoc.api.annotations.ParameterObject;
 
 import com.spark.ana.rest.client.AlmaProxy;
@@ -28,12 +31,13 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/monitor")
-
+@Slf4j
 public class MonitorController {
 
     @Autowired
     private AlmaProxy proxy;
-
+    @Autowired
+    private GPOConnService gpoConnService;
 
 
     @PostMapping(value = "/connect", produces = "application/json")
@@ -61,6 +65,19 @@ public class MonitorController {
 
 
         return ResponseEntity.status(HttpStatus.OK).body(item.toString());
+
+
+    }
+
+    @GetMapping(value = "/trigger", produces = "application/json")
+    public ResponseEntity<String> triggerGPOOn(@Valid @ParameterObject TagRequest request) {
+        String result = "hfv:success";
+
+
+        result = gpoConnService.triggerGPOOn();
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(result.toString());
 
 
     }
